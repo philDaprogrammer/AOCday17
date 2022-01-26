@@ -36,10 +36,45 @@ public class Solution {
 
     public void solveP1() {
         // what do you do when cannot solve a problem... cheat like hell
+        // The maximum y cord is the distance from the start to the bottom row minus one, or abs(this.yMin) - 1
+        // In all reality, why this works is kinda complicated, but it does...
         int maxHeight = Math.abs(this.yMin) - 1; // yMin input should always be negative... I think;
         int total     = 0;
 
         for (int i=0; i < maxHeight; ++i) { total += maxHeight - i; }
         System.out.println("Max Trick shot height: " + total);
+    }
+
+    private boolean hit(int x, int y, int xMax, int yMax) {
+        int xSteps = x;
+        int ySteps = y;
+
+        while ((y >= yMax ) && (x <= xMax)) {
+            if ((x >= this.xMin) && (x <= this.xMax) && (y >= this.yMin) && (y <= this.yMax)) {
+                return true;
+            }
+
+            xSteps--;
+            ySteps--;
+
+            if (ySteps != 0) { y += ySteps; }
+            if (xSteps > 0)  { x += xSteps; }
+        }
+
+        return false;
+    }
+
+    public void solveP2() {
+        int xMax  = this.xMax;
+        int yMax  = Math.abs(this.yMin) - 1;
+        int total = 0;
+
+        for (int x=0; x <= xMax; ++x) {
+            for (int y=this.yMin; y <= yMax; ++y) {
+                if (hit(x, y, xMax, this.yMin)) { total += 1; }
+            }
+        }
+
+        System.out.println("Total velocity positions: " + total);
     }
 }
